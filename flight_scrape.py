@@ -22,9 +22,9 @@ return_flight = input("Enter return date as 'yyyy-mm-dd': ")
 #request flight type
 type = input("Enter flight type (best, cheapest, or quickest): ")
 if(type == 'best'):
-    type_in = '?sort=bestflight_a';
+    type_in = '?sort=bestflight_a'
 elif(type == 'cheapest'):
-    type_in = '?sort=price_a';
+    type_in = '?sort=price_a'
 elif(type == 'quickest'):
     type_in = '?sort=duration_a'
 
@@ -35,7 +35,7 @@ sleep(5)
 
 try:
     xp_popup_close = '//button[contains(@id,"dialog-close") and contains(@class,"Button-No-Standard-Style close ")]'
-    driver.find_elements_by_xpath(xp_popup_close)[5].click()
+    browser.find_elements_by_xpath(xp_popup_close)[5].click()
 except Exception as e:
     pass
 
