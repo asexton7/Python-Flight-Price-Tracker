@@ -1,4 +1,4 @@
-#import libraries
+# import libraries
 from time import sleep, strftime
 from random import randint
 import pandas as pd
@@ -7,19 +7,18 @@ from selenium.webdriver.common.keys import Keys
 import smtplib
 from email.mime.multipart import MIMEMultipart
 
-#setup chromedriver
-chromedriver_path = 'D:/Programming/ChromeDriver/chromedriver.exe'
-browser = webdriver.Chrome(executable_path = chromedriver_path)
+# setup driver
+browser = webdriver.Firefox()
 
-#get airport designations
+# get airport designations
 origin = input("Enter 3 letter origin airport: ")
 destination = input("Enter 3 letter destination airport: ")
 
-#get dates
+# get dates
 departure = input("Enter departure date as 'yyyy-mm-dd': ")
 return_flight = input("Enter return date as 'yyyy-mm-dd': ")
 
-#request flight type
+# request flight type
 type = input("Enter flight type (best, cheapest, or quickest): ")
 if(type == 'best'):
     type_in = '?sort=bestflight_a'
@@ -28,7 +27,7 @@ elif(type == 'cheapest'):
 elif(type == 'quickest'):
     type_in = '?sort=duration_a'
 
-#open the corresponding browser page to check for updates
+# open the corresponding browser page to check for updates
 kayak = 'https://www.kayak.com/flights/' + origin + '-' + destination + '/' + departure + '/' + return_flight + type_in
 browser.get(kayak)
 sleep(5)
@@ -41,6 +40,6 @@ except Exception as e:
 
 prices_x = '//a[@class="booking-link"]/span[@class="price option-text"]'
 prices = browser.find_elements_by_xpath(prices_x)
-prices_list = [price.text.replace('$','') for price in prices if price.text != '']
+prices_list = [price.text.replace('$', '') for price in prices if price.text != '']
 prices_list = list(map(int, prices_list))
 print(prices_list)
