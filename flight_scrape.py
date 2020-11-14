@@ -9,21 +9,21 @@ from email.mime.multipart import MIMEMultipart
 
 # setup driver
 CHROMEDRIVER_PATH = "D:\\Programming\\ChromeDriver\\chromedriver.exe"
-# chrome_options = Options()
-# chrome_options.add_argument("--headless")
-browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH) #, options=chrome_options)
+chrome_options = Options()
+# chrome_options.headless = True
+# chrome_options.add_argument("--window-size=1920,1080")
+chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH , options=chrome_options)
 
 
 def getPorts():
     # get airport designations
     origin = input("Enter 3 letter origin airport: ")
     while(len(origin) != 3):
-        origin = ...
-        input("Only 3 letter airport codes supported, try again: ")
+        origin=input("Only 3 letter airport codes supported, try again: ")
     destination = input("Enter 3 letter destination airport: ")
     while(len(destination) != 3):
-        destination = ...
-        input("Only 3 letter airport codes supported, try again: ")
+        destination=input("Only 3 letter airport codes supported, try again: ")
 
     return origin, destination
 
@@ -64,7 +64,23 @@ type = getFlightType()
 # open the corresponding browser page to check for updates
 kayak = 'https://www.kayak.com/flights/{}-{}/{}/{}{}'.format(origin, destination, depart_date, return_date, type)
 browser.get(kayak)
-sleep(5)
 
-# refresh to close pop up
+# refresh to close pop up, wait for page to refresh
 browser.refresh()
+sleep(2)
+
+# get the lowest priced flight on the page
+searchResults = browser.find_element_by_xpath("//*[@id=\"searchResultsList\"]")
+prices = searchResults.find_elements_by_class_name("price-text")
+
+sleep(2)
+# iterate through list. keep actual values
+price_out = []
+for price in prices:
+    price_out.append(price.text.replace('$', ''))
+
+# filter out none values
+price_out = list(map(int, [price for price in price_out if price.isdigit()]))
+
+cheapest_flight = min(price_out)
+print(cheapest_flight)
