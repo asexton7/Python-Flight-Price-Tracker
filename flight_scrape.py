@@ -67,13 +67,13 @@ browser.get(kayak)
 
 # refresh to close pop up, wait for page to refresh
 browser.refresh()
-sleep(2)
+sleep(10)
 
 # get the lowest priced flight on the page
 searchResults = browser.find_element_by_xpath("//*[@id=\"searchResultsList\"]")
 prices = searchResults.find_elements_by_class_name("price-text")
 
-sleep(2)
+sleep(5)
 # iterate through list. keep actual values
 price_out = []
 for price in prices:
