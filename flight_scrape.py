@@ -41,11 +41,13 @@ def getDates():
     return [depart_date, return_date]
 
 
-def getFlightType():
+def getFlightSearchType():
     # request flight type
     type = input("Enter flight type (best, cheapest, or quickest): ")
-    while(type != ('best' or 'cheapest' or 'quickest')):
+
+    while type not in ['best', 'cheapest', 'quickest']:
         type = input("Input was not 'best, cheapest, or quickest', retry: ")
+
     if(type == 'best'):
         type_in = '?sort=bestflight_a'
     elif(type == 'cheapest'):
@@ -59,7 +61,7 @@ def getFlightType():
 # get airports, dates, and flight type
 origin, destination = getPorts()
 depart_date, return_date = getDates()
-type = getFlightType()
+type = getFlightSearchType()
 
 # open the corresponding browser page to check for updates
 kayak = 'https://www.kayak.com/flights/{}-{}/{}/{}{}'.format(origin, destination, depart_date, return_date, type)
