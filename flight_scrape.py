@@ -2,10 +2,10 @@
 from time import sleep, strftime
 import pandas as pd
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
-import smtplib
-from email.mime.multipart import MIMEMultipart
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # setup driver
 CHROMEDRIVER_PATH = "D:\\Programming\\ChromeDriver\\chromedriver.exe"
@@ -69,11 +69,19 @@ browser.get(kayak)
 
 # refresh to close pop up, wait for page to refresh
 browser.refresh()
-sleep(10)
+
+
+wait = WebDriverWait(browser, 15)
+progressBar = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "progress-bar")))
+
+loadComplete = WebDriverWait(progressBar, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "Common-Results-ProgressBar theme-dark Hidden")))
+
+print(loadComplete.get_attribute("class"))
 
 # get the lowest priced flight on the page
 searchResults = browser.find_element_by_xpath("//*[@id=\"searchResultsList\"]")
 prices = searchResults.find_elements_by_class_name("price-text")
+
 
 sleep(5)
 # iterate through list. keep actual values
