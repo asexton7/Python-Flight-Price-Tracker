@@ -1,6 +1,5 @@
 # import libraries
-from time import sleep, strftime
-import pandas as pd
+from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -67,23 +66,18 @@ type = getFlightSearchType()
 kayak = 'https://www.kayak.com/flights/{}-{}/{}/{}{}'.format(origin, destination, depart_date, return_date, type)
 browser.get(kayak)
 
-# refresh to close pop up, wait for page to refresh
-browser.refresh()
-
-
-wait = WebDriverWait(browser, 15)
-progressBar = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "progress-bar")))
-
-loadComplete = WebDriverWait(progressBar, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "Common-Results-ProgressBar theme-dark Hidden")))
-
-print(loadComplete.get_attribute("class"))
+# wait up to 45s for progress bar to indicate all flights loaded
+wait = WebDriverWait(browser, 45)
+try:
+    progressBar_present = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@class=\"bar\"][@style=\"transform: translateX(100%);\"]")))
+except:
+    print("loading took too long, try search again")
+    browser.get(kayak)
 
 # get the lowest priced flight on the page
 searchResults = browser.find_element_by_xpath("//*[@id=\"searchResultsList\"]")
 prices = searchResults.find_elements_by_class_name("price-text")
 
-
-sleep(5)
 # iterate through list. keep actual values
 price_out = []
 for price in prices:
