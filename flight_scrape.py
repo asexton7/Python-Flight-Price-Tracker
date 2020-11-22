@@ -86,6 +86,7 @@ for price in prices:
 # filter out none values
 price_out = list(map(int, [price for price in price_out if price.isdigit()]))
 
+# try catch block in case price_out is an empty vector
 try:
     cheapest_flight = min(price_out)
     print(cheapest_flight)
