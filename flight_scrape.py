@@ -71,7 +71,7 @@ wait = WebDriverWait(browser, 45)
 try:
     progressBar_present = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@class=\"bar\"][@style=\"transform: translateX(100%);\"]")))
 except:
-    print("loading took too long, try search again")
+    print("Search took too long, try search again")
     browser.get(kayak)
 
 # get the lowest priced flight on the page
@@ -86,5 +86,8 @@ for price in prices:
 # filter out none values
 price_out = list(map(int, [price for price in price_out if price.isdigit()]))
 
-cheapest_flight = min(price_out)
-print(cheapest_flight)
+try:
+    cheapest_flight = min(price_out)
+    print(cheapest_flight)
+except ValueError:
+    print("No Flights Found for these dates, try search again with different dates or airports")
