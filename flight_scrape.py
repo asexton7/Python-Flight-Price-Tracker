@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import Flight
 
 # setup driver
 CHROMEDRIVER_PATH = "D:\\Programming\\ChromeDriver\\chromedriver.exe"
@@ -61,6 +62,8 @@ def getFlightSearchType():
 origin, destination = getPorts()
 depart_date, return_date = getDates()
 type = getFlightSearchType()
+
+flight = Flight(origin, destination, depart_date, return_date)
 
 # open the corresponding browser page to check for updates
 kayak = 'https://www.kayak.com/flights/{}-{}/{}/{}{}'.format(origin, destination, depart_date, return_date, type)
